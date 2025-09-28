@@ -1,3 +1,17 @@
+/* Sky background container for sun and moon, always behind content */
+.sky-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sky-sun, .sky-moon {
+  z-index: 1;
+}
+.weather-app-frame, .glass-hero-container, .weather-cards-row, #root {
+  position: relative;
+  z-index: 2;
+}
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -28,31 +42,139 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  background: #23263a !important;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Mystical blue animated effect */
+  background:
+    radial-gradient(ellipse 60% 40% at 60% 30%, #2a3355bb 0%, #334477bb 60%, transparent 100%),
+    radial-gradient(ellipse 40% 20% at 30% 70%, #3a3377aa 0%, #3a447799 60%, transparent 100%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, #23263aaa 0%, #34375a66 80%, transparent 100%),
+    repeating-linear-gradient(120deg, #00eaff11 0 10px, transparent 10px 20px);
+  opacity: 0.7;
+  mix-blend-mode: lighten;
+  filter: blur(10px) saturate(1.2);
+  animation: mysticBlue 5s linear infinite alternate;
+  transition: opacity .5s;
+}
+    
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      /* Bold animated sky gradient, sun, and moon */
+      background:
+        linear-gradient(180deg, #7bb3d9 0%, #3a5d9a 40%, #1a2340 70%, #070a18 100%);
+      filter: brightness(0.85) saturate(0.95);
+      opacity: 1;
+      animation: skyDayNight 10s cubic-bezier(.6,0,.4,1) infinite alternate;
+      transition: opacity 0.5s;
+    }
+
+    .sky-sun {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, #ffe066cc 0%, #ffd70055 60%, transparent 100%);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(2px) brightness(1.1);
+  transform: translate(-50%, -50%);
+  animation: sunOrbit 24s linear infinite;
+    }
+    .sky-moon {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle, #bbcaf7e8 0%, #82a0f1c0 60%, transparent 100%);
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(1.5px) brightness(0.9);
+  transform: translate(-50%, -50%);
+  animation: moonOrbit 24s linear infinite;
+    }
+
+@keyframes sunOrbit {
+  0%   { transform: translate(-50%, -50%) rotate(0deg) translateY(-32vh) scale(1); opacity: 1; }
+  40%  { opacity: 1; }
+  49%  { opacity: 0.2; }
+  50%  { transform: translate(-50%, -50%) rotate(180deg) translateY(-32vh) scale(0.95); opacity: 0.1; }
+  51%  { opacity: 0.2; }
+  60%  { opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-32vh) scale(1); opacity: 1; }
+}
+@keyframes moonOrbit {
+  0%   { transform: translate(-50%, -50%) rotate(180deg) translateY(-32vh) scale(0.95); opacity: 0.1; }
+  40%  { opacity: 0.2; }
+  49%  { opacity: 1; }
+  50%  { transform: translate(-50%, -50%) rotate(360deg) translateY(-32vh) scale(1); opacity: 1; }
+  51%  { opacity: 1; }
+  60%  { opacity: 0.2; }
+  100% { transform: translate(-50%, -50%) rotate(540deg) translateY(-32vh) scale(0.95); opacity: 0.1; }
+}
+    
+    @keyframes skyDayNight {
+      0% { background-position: 0% 0%; filter: brightness(1.1) saturate(1.1); }
+      100% { background-position: 0% 100%; filter: brightness(0.7) saturate(0.9) hue-rotate(-20deg); }
+    }
+
+@keyframes mysticBlue {
+  0% {
+    background-position: 0% 0%, 100% 100%, 50% 100%, 0 0;
+  }
+  100% {
+    background-position: 100% 100%, 0% 0%, 50% 0%, 100% 100%;
+  }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  /* Ensure content is sharp and above the mystical effect */
+  filter: none !important;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.main-panoramic {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2vw;
+  padding: 2vw 0;
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 4.2em;
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -65,4 +187,85 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@media (max-width: 900px) {
+  .main-panoramic {
+    flex-direction: column;
+    gap: 1vw;
+    padding: 1vw 0;
+  }
+}
+
+/* Fixed overlay for visual effects (no clicks pass to it) */
+.fx-layer {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== Droplet/Mist particles ===== */
+.fx-drop {
+  position: fixed;
+  width: 10px; height: 14px;
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: 8px 8px 10px 10px;
+  background:
+    radial-gradient(60% 70% at 50% 30%, rgba(0,234,255,0.9), rgba(0,164,255,0.2) 70%, transparent 72%),
+    linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.0));
+  box-shadow:
+    0 0 10px rgba(0, 234, 255, 0.5),
+    0 0 24px rgba(0, 164, 255, 0.35);
+  filter: drop-shadow(0 0 6px rgba(0,234,255,0.45));
+  opacity: 0.9;
+  animation: fxDropFade 700ms ease-out forwards;
+}
+@keyframes fxDropFade {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.9; }
+  70%  { transform: translate(-50%, calc(-50% - 6px)) scale(0.9); opacity: 0.5; }
+  100% { transform: translate(-50%, calc(-50% - 10px)) scale(0.75); opacity: 0; }
+}
+
+/* Lighter “mist” variant for variety */
+.fx-mist {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,234,255,0.6) 0 40%, rgba(0,164,255,0.2) 40% 70%, transparent 72%);
+  box-shadow: 0 0 12px rgba(0, 234, 255, 0.35);
+  animation: fxMist 600ms ease-out forwards;
+}
+@keyframes fxMist {
+  0%   { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+  100% { transform: translate(-50%, calc(-50% - 8px)) scale(0.6); opacity: 0; }
+}
+
+/* ===== Ripple click pulse ===== */
+.fx-ripple {
+  position: fixed;
+  width: 12px; height: 12px;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(0,234,255,0.65), rgba(0,234,255,0) 70%);
+  mix-blend-mode: screen;
+  filter: blur(0.2px);
+  animation: fxRipple 650ms ease-out forwards;
+}
+@keyframes fxRipple {
+  0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0.7; }
+  60%  { transform: translate(-50%, -50%) scale(12);  opacity: 0.25; }
+  100% { transform: translate(-50%, -50%) scale(16);  opacity: 0; }
+}
+
+/* Optional: make ripple feel watery on glass */
+.fx-ripple::after {
+  content: "";
+  position: absolute; inset: -14px;
+  border-radius: inherit;
+  border: 1px solid rgba(0,234,255,0.25);
+  box-shadow: 0 0 24px rgba(0,164,255,0.25);
+  animation: fxRippleRing 650ms ease-out forwards;
+}
+@keyframes fxRippleRing {
+  from { transform: scale(0.7); opacity: 0.5; }
+  to   { transform: scale(1.6); opacity: 0; }
 }
