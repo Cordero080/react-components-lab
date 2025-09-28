@@ -1,10 +1,13 @@
 // src/App.jsx
 // Main React app for the weather dashboard
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import WeatherForecast from "./components/WeatherForecast/WeatherForecast";
 import "./App.css";
 import "./components/WeatherForecast/cursor.css"; // Custom cursor styles
 import DualRingCursor from "./components/WeatherForecast/DualRingCursor"; // Custom animated cursor
+
+import SkyBackground from "./components/SkyBackground";
+import CursorFX from "./components/CursorFX";
 
 // Weather forecast data for each card. Each object represents a day's forecast.
 // The `condition` is used for CSS themes, while `label` is shown to users.
@@ -84,66 +87,14 @@ const weatherForecasts = [
 
 // Main App component
 export default function App() {
-  // Ref for the FX overlay layer (for cursor/mist/ripple effects)
-  const fxRef = useRef(null);
-
-  // Set up event listeners for custom cursor/mist/ripple particle effects
-  useEffect(() => {
-    const fxLayer = fxRef.current;
-    if (!fxLayer) return;
-
-    let last = 0; // Last time a particle was spawned
-    const maxParticles = 40; // Max number of particles on screen
-
-    // Spawn a particle of class `cls` at (x, y)
-    const spawn = (cls, x, y) => {
-      const el = document.createElement("div");
-      el.className = cls;
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-      fxLayer.appendChild(el);
-      // Remove particle after animation
-      el.addEventListener("animationend", () => el.remove());
-      // Limit number of particles
-      while (fxLayer.childNodes.length > maxParticles) {
-        fxLayer.removeChild(fxLayer.firstChild);
-      }
-    };
-
-    // On pointer move, spawn a droplet or mist particle at the cursor
-    const onMove = (e) => {
-      const now = performance.now();
-      if (now - last < 60) return; // Throttle particle spawn rate
-      last = now;
-      spawn(Math.random() < 0.35 ? "fx-drop" : "fx-mist", e.clientX, e.clientY);
-    };
-
-    // On pointer down (click), spawn a ripple effect
-    const onClick = (e) => {
-      spawn("fx-ripple", e.clientX, e.clientY);
-    };
-
-    // Register event listeners
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerdown", onClick, { passive: true });
-    // Cleanup listeners on unmount
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerdown", onClick);
-    };
-  }, []);
-
-  // Render the app
   return (
     <>
-      {/* Sky background overlays behind all content (sun and moon orbiting) */}
-      <div className="sky-bg">
-        {/* Animated sun and moon, styled and animated in CSS to orbit */}
-        <div className="sky-sun" />
-        <div className="sky-moon" />
-      </div>
+      {/* Modular sky background (sun and moon) */}
+      <SkyBackground />
       {/* Custom animated cursor (dual ring, particles, etc) */}
       <DualRingCursor />
+      {/* Modular FX overlay for cursor/mist/ripple particles */}
+      <CursorFX />
       <div className="weather-app-frame">
         {/* Glass hero section at the top */}
         <header className="glass-hero-container">
@@ -176,9 +127,6 @@ export default function App() {
             />
           ))}
         </section>
-
-        {/* FX overlay for cursor/mist/ripple particles (absolutely positioned) */}
-        <div className="fx-layer" ref={fxRef} aria-hidden="true" />
       </div>
     </>
   );
