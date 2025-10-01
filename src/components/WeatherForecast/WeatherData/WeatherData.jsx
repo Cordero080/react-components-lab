@@ -1,9 +1,39 @@
-import React from 'react';
-// Removed: import './WeatherData.css'; to fix the "Could not resolve" error.
-// The custom CSS selectors are now assumed to be in the main app's CSS file.
+// Modularized conditions info line
+function ConditionsInfo({ conditions }) {
+  return (
+    <p className="weather-data-sub">
+      <span>Conditions:</span> {conditions}
+    </p>
+  );
+}
 
-// Helper component for expanded details display
-// Uses Tailwind CSS classes for structure and styling within the expanded view
+// Modularized time info line
+function TimeInfo({ time }) {
+  return (
+    <p className="weather-data-sub">
+      <span>Time:</span> {time}
+    </p>
+  );
+}
+import React from 'react';
+
+// Modularized main temperature display
+function MainTemperature({ temp }) {
+  return (
+    <p className="text-6xl font-extrabold text-white my-2 tracking-tighter drop-shadow-xl">
+      {temp}°C
+    </p>
+  );
+}
+
+function DayLabel({ day }) {
+  return (
+    <div className="day-flip-outer">
+      <span className="weather-data-main day-flip-text">{day}</span>
+    </div>
+  );
+}
+
 const DetailItem = ({ label, value, unit, color }) => (
     // Uses 'detail-item' class for border/padding and utility classes for layout
     <div className="flex justify-between items-center text-left px-4 detail-item">
@@ -16,15 +46,15 @@ const DetailItem = ({ label, value, unit, color }) => (
 const WeatherData = ({ day, conditions, time, temp, low, high, humidity, wind, uv, isExpanded }) => {
   return (
     <div className="w-full text-center">
-      {/* Primary Info Block: Day of the week - Uses class from external CSS */}
-      <h2 className="weather-data-main">{day}</h2>
+      {/* Primary Info Block: Day of the week - News ticker style infinite scroll */}
+     <DayLabel day={day} />
       
-      {/* Main Temperature: Increased size and impact using a custom Tailwind class for emphasis */}
-      <p className="text-6xl font-extrabold text-white my-2 tracking-tighter drop-shadow-xl">{temp}°C</p>
+  {/* Main Temperature: Modularized as its own component */}
+  <MainTemperature temp={temp} />
       
-      {/* Secondary Info - Uses class from external CSS */}
-      <p className="weather-data-sub"><span>Conditions:</span> {conditions}</p>
-      <p className="weather-data-sub"><span>Time:</span> {time}</p>
+  {/* Secondary Info - Modularized as their own components */}
+  <ConditionsInfo conditions={conditions} />
+  <TimeInfo time={time} />
       
       {/* Expanded Details Section - Conditionally rendered based on isExpanded */}
       {isExpanded && (

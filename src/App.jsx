@@ -2,12 +2,15 @@
 // Main React app for the weather dashboard
 import React from "react";
 import WeatherForecast from "./components/WeatherForecast/WeatherForecast";
+import "./components/WeatherForecast/WeatherData/WeatherData.css";
+import Flame from "./components/WeatherForecast/effects/Flame";
+import SnowParticles from "./components/WeatherForecast/effects/SnowParticles";
 import "./App.css";
-import "./components/WeatherForecast/cursor.css"; // Custom cursor styles
-import DualRingCursor from "./components/WeatherForecast/DualRingCursor"; // Custom animated cursor
+import "./components/WeatherForecast/cursor/cursor.css"; // Custom cursor styles
+import DualRingCursor from "./components/WeatherForecast/cursor/DualRingCursor"; // Custom animated cursor
 
 import SkyBackground from "./components/SkyBackground";
-import CursorFX from "./components/CursorFX";
+import CursorFX from "./components/WeatherForecast/cursor/CursorFX";
 
 // Weather forecast data for each card. Each object represents a day's forecast.
 // The `condition` is used for CSS themes, while `label` is shown to users.
@@ -21,10 +24,10 @@ const weatherForecasts = [
     condition: "sunny",      // token for styling - f.condition will be "sunny"
     label: "Sunny",          // shown to users - f.label will be "Sunny"
     time: "Morning",         // f.time will be "Morning"
-    temp: 28,               // f.temp will be 28
+    temp: 800,               // f.temp will be 28
     low: 18,                // f.low will be 18
-    high: 30,               // f.high will be 30
-    humidity: 45,           // f.humidity will be 45
+    high: 9000,               // f.high will be 30
+    humidity: 0,           // f.humidity will be 45
     wind: 15,               // f.wind will be 15
     uv: 8,                  // f.uv will be 8
   },
@@ -34,9 +37,9 @@ const weatherForecasts = [
     img: "https://pages.git.generalassemb.ly/modular-curriculum-all-courses/react-components-lab/assets/night.svg",
     imgAlt: "moon icon",
     condition: "clear",     // f.condition will be "clear"
-    label: "Clear Night",   // f.label will be "Clear Night"
+    label: "super duper brick",   // f.label will be "super duper brick"
     time: "Night",          // f.time will be "Night"
-    temp: 16,               // f.temp will be 16
+    temp: -200,              // f.temp will be -200
     low: 14,
     high: 25,
     humidity: 70,
@@ -121,13 +124,29 @@ export default function App() {
           </h1>
         </header>
 
+        {/* Main degree marker for today, above all cards, no container */}
+        {(() => {
+          const todayIdx = new Date().getDay() - 1; // 0=Sun, 1=Mon, ...
+          const marker = weatherForecasts[todayIdx >= 0 ? todayIdx : 0];
+          if (!marker) return null;
+          return (
+            <div className="main-degree-marker-container">
+              <div className="main-degree-label">Today</div>
+              <div style={{ height: '2.5em' }} />
+              <span className="main-degree-marker">{marker.day}</span>
+              <span className="main-degree-temp">{marker.temp}°C</span>
+            </div>
+          );
+        })()}
         {/* Row of weather forecast cards */}
-        {/* This section contains our REPEATED CHILD COMPONENTS */}
-        <section className="weather-cards-row">
-          {/* HERE'S THE KEY PART - THE MAP FUNCTION */}
-          {/* weatherForecasts is our array of 5 objects */}
-          {/* .map() loops through each object in the array */}
-          {/* (f, i) => means: f = current object, i = current index (0,1,2,3,4) */}
+        <section className="weather-cards-row" style={{ position: 'relative' }}>
+          {/* Render flame above Monday card, icicle above Tuesday card */}
+          <div className="monday-flame">
+            {weatherForecasts[0]?.day === 'Mon' && <Flame />}
+          </div>
+          <div className="tuesday-icicle">
+            {/* No snowflake above Tuesday, snow particles will be rendered inside the card */}
+          </div>
           {weatherForecasts.map((f, i) => (
             <WeatherForecast
               key={`${f.day}-${i}`}
@@ -143,10 +162,9 @@ export default function App() {
               wind={f.wind}
               uv={f.uv}
               _conditionToken={f.condition}
+              snowParticles={f.day === 'Tue' ? <SnowParticles /> : null}
             />
           ))}
-          {/* END OF MAP FUNCTION - this creates 5 WeatherForecast components */}
-          {/* React calls this function 5 times, once for each object in weatherForecasts array */}
         </section>
       </div>
     </>

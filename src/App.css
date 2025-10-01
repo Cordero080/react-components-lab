@@ -1,3 +1,102 @@
+.main-degree-marker-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    gap: 0;
+  margin-bottom: 3rem;
+}
+
+.main-degree-marker {
+  font-family: 'Orbitron', 'Jura', 'Segoe UI', Arial, sans-serif !important;
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: 0.13em;
+    opacity: 0.85;
+    margin-bottom: 0.22em;
+    animation: dayTextFadeIn 1.2s cubic-bezier(0.33, 1, 0.68, 1) 0.1s both;
+  }
+
+  @keyframes dayTextFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(18px) scale(0.98);
+      filter: blur(2px);
+    }
+    100% {
+      opacity: 0.88;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+}
+
+@keyframes dayTextFadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+    filter: blur(2px);
+  }
+    0% {
+      opacity: 0;
+      transform: translateY(18px) scale(0.98);
+      filter: blur(2px);
+    }
+    14% {
+      opacity: 0.88;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+    86% {
+      opacity: 0.88;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.98);
+      filter: blur(2px);
+    }
+}
+.main-degree-temp {
+  font-family: 'Orbitron', 'Jura', 'Segoe UI', Arial, sans-serif !important;
+  font-weight: 600;
+  font-size: 2.5rem;
+  letter-spacing: 0.04em;
+  margin-top: 0.18em;
+  position: relative;
+}
+.main-degree-temp::after {
+  content: '';
+  display: block;
+  margin: 0.18em auto 0 auto;
+  width: 2.2em;
+  height: 0.18em;
+  border-radius: 1em;
+  background: linear-gradient(90deg, #aef6ff55 0%, #e0b3ff66 100%);
+  opacity: 0.7;
+}
+.glass-hero-heading, .glass-hero-main, .glass-hero-sub {
+  font-family: 'Orbitron', 'Jura', 'Segoe UI', Arial, sans-serif !important;
+}
+@media (max-width: 600px) {
+  .main-degree-marker-container {
+    gap: 0.08em;
+    margin-bottom: 0.2em;
+  }
+  .main-degree-label {
+    font-size: 0.92rem;
+    margin-bottom: 3.5em !important;
+  }
+  .main-degree-marker {
+    font-size: 1rem;
+  }
+  .main-degree-temp {
+    font-size: 0.85rem;
+    font-weight: 400;
+    opacity: 0.7;
+    letter-spacing: 0.16em;
+    margin-bottom: 2.5em;
+  }
+}
 .sky-moon::after {
   content: '';
   position: absolute;
@@ -8,9 +107,7 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 2px solid rgba(180, 200, 255, 0.092);
-  box-shadow: 0 0 32px 8px #bfcaff15, 0 0 6px 1px #e0eaff92;
-  filter: blur(4px);
-  opacity: 0.7;
+  box-shadow: 0 0 32px 8px #bfcaff15, 0 0 6px 1px #e0eaff4a;
   pointer-events: none;
   z-index: 0;
 }
@@ -98,7 +195,7 @@
   .glass-hero-heading {
     font-size: 0.95rem;
     padding: 0.5em 0.5em;
-    min-width: 0;
+  margin-bottom: 0;
     max-width: 98vw;
   }
   .weather-cards-row {
@@ -117,7 +214,7 @@
 .weather-app-frame {
   max-width: 2200px;
   min-width: 220px;
-  margin: 2.5rem auto;
+  margin: -4rem auto 0 auto;
   border-radius: .5em;
   box-shadow:
     0 12px 64px 0 rgba(60, 120, 255, 0.22),
@@ -162,7 +259,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 1.2rem auto 1.5rem auto;
+  margin: 0 auto .3rem auto;
   padding: 0;
   position: relative;
   z-index: 3;

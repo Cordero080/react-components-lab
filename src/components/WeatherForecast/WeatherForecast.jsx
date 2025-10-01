@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import WeatherIcon from './WeatherIcon';
-import WeatherData from './WeatherData';
+import WeatherIcon from './icons/WeatherIcon';
+import WeatherData from './WeatherData/WeatherData';
 import './WeatherForecast.css';
 
-const WeatherForecast = ({ day, img, imgAlt, conditions, time, temp, low, high, humidity, wind, uv }) => {
+const WeatherForecast = ({ day, img, imgAlt, conditions, time, temp, low, high, humidity, wind, uv, snowParticles }) => {
   // State to manage whether the detail view (expanded view) is visible
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -28,7 +28,12 @@ const WeatherForecast = ({ day, img, imgAlt, conditions, time, temp, low, high, 
   return (
     <div 
       className={`weather transition-all duration-300 ${mods.join(' ')}`}
+      style={{ position: 'relative' }}
     >
+      {/* Render snow particles if provided (for Tuesday) */}
+      {snowParticles && (
+        <div className="snow-particles-absolute">{snowParticles}</div>
+      )}
       <WeatherData 
         day={day} 
         conditions={conditions} 

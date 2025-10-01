@@ -40,7 +40,11 @@ a:hover {
 }
 
 body {
-  margin: 8vh 0 0 0;
+  margin: 0;
+  min-height: 10vh;
+  width: 100vw;
+  overflow-x: hidden;
+  /* Remove flex centering from body, let #root handle centering */
   display: flex;
   place-items: center;
   min-width: 320px;
@@ -62,11 +66,12 @@ body {
         linear-gradient(180deg, #142149 0%, #2c4673 40%, #2c3c70 70%, #5579b3 100%);
       filter: brightness(0.85) saturate(0.95);
       opacity: 1;
-      animation: skyDayNight 20s cubic-bezier(.6,0,.4,1) infinite alternate;
+  animation: skyDayNight 36s cubic-bezier(.6,0,.4,1) infinite alternate;
       transition: opacity 1.5s;
     }
 
-    .sky-sun {
+
+.sky-sun {
   position: fixed;
   left: 50%;
   top: 50%;
@@ -76,10 +81,10 @@ body {
   border-radius: 50%;
   z-index: 1;
   pointer-events: none;
-  filter: blur(2px) brightness(1.1);
   transform: translate(-50%, -50%);
-  animation: sunOrbit 40s linear infinite, sunGlow 5s ease-in-out infinite;
-    }
+  animation: sunOrbit 36s linear infinite, sunGlow 36s linear infinite alternate;
+  /* Removed static filter and opacity to allow sunGlow animation to control dimming */
+}
     .sky-moon {
   position: fixed;
   left: 50%;
@@ -90,20 +95,54 @@ body {
   border-radius: 50%;
   z-index: 1;
   pointer-events: none;
-  filter: blur(3.5px) brightness(1.50);
+  filter: blur(3.5px) brightness(1);
   transform: translate(-50%, -50%);
-  animation: moonOrbit 18s linear infinite, moonGlow 5s ease-in-out infinite;
+  animation: moonOrbit 36s linear infinite, moonGlow 36s linear infinite;
   animation-delay: 0s, 2.5s;
 @keyframes sunGlow {
-  0%, 100% { filter: blur(6px) brightness(1.5); box-shadow: 0 0 32px 12px #ffe06688, 0 0 96px 32px #fffbe888; }
-  40% { filter: blur(6px) brightness(3.2); box-shadow: 0 0 256px 96px #ffe066ff, 0 0 384px 128px #fffbe8cc, 0 0 128px 48px #ffe066cc; }
-  60% { filter: blur(6px) brightness(4.2); box-shadow: 0 0 256px 96px #ffe066ff, 0 0 384px 128px #fffbe8cc, 0 0 128px 48px #ffe066cc; }
+  0% {
+    filter: blur(6px) brightness(1.5);
+    box-shadow: 0 0 32px 12px #ffe06688, 0 0 96px 32px #fffbe888;
+    opacity: 1 !important;
+  }
+  50% {
+    filter: blur(6px) brightness(0.04);
+    box-shadow: 0 0 2px 1px #ffe06622, 0 0 8px 3px #fffbe811;
+    opacity: 0.08 !important;
+  }
+  100% {
+    filter: blur(6px) brightness(1.5);
+    box-shadow: 0 0 32px 12px #ffe06688, 0 0 96px 32px #fffbe888;
+    opacity: 1 !important;
+  }
 }
 
 @keyframes moonGlow {
-  0%, 100% { filter: blur(1px) brightness(1.7); box-shadow: 0 0 64px 24px #bfcaffcc, 0 0 128px 48px #e0eaffbb, 0 0 32px 12px #aeefffcc; }
-  40% { filter: blur(12px) brightness(2.7); box-shadow: 0 0 192px 72px #bfcaffff, 0 0 256px 96px #e0eaffee, 0 0 96px 36px #aeefffdd; }
-  60% { filter: blur(12px) brightness(2); box-shadow: 0 0 192px 72px #bfcaffff, 0 0 256px 96px #e0eaffee, 0 0 96px 36px #aeefffdd; }
+  0% {
+    filter: blur(1px) brightness(0.5);
+    box-shadow: 0 0 16px 6px #bfcaff55, 0 0 32px 12px #e0eaff33, 0 0 8px 3px #aeefff22;
+    opacity: 0.2;
+  }
+  40% {
+    filter: blur(8px) brightness(1.2);
+    box-shadow: 0 0 64px 24px #bfcaffcc, 0 0 128px 48px #e0eaffbb, 0 0 32px 12px #aeefffcc;
+    opacity: 0.5;
+  }
+  50% {
+    filter: blur(12px) brightness(2.7);
+    box-shadow: 0 0 192px 72px #bfcaffff, 0 0 256px 96px #e0eaffee, 0 0 96px 36px #aeefffdd;
+    opacity: 1;
+  }
+  60% {
+    filter: blur(8px) brightness(1.2);
+    box-shadow: 0 0 64px 24px #bfcaffcc, 0 0 128px 48px #e0eaffbb, 0 0 32px 12px #aeefffcc;
+    opacity: 0.5;
+  }
+  100% {
+    filter: blur(1px) brightness(0.5);
+    box-shadow: 0 0 16px 6px #bfcaff55, 0 0 32px 12px #e0eaff33, 0 0 8px 3px #aeefff22;
+    opacity: 0.2;
+  }
 }
 @keyframes moonGlowRandom {
   0%   { filter: blur(1.2px) brightness(1.15); }
@@ -118,22 +157,12 @@ body {
     }
 
 @keyframes sunOrbit {
-  0%   { transform: translate(-50%, -50%) rotate(0deg) translateY(-32vh) scale(1); opacity: 1; }
-  40%  { opacity: 1; }
-  49%  { opacity: 0.2; }
-  50%  { transform: translate(-50%, -50%) rotate(180deg) translateY(-32vh) scale(0.95); opacity: 0.1; }
-  51%  { opacity: 0.2; }
-  60%  { opacity: 1; }
-  100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-32vh) scale(1); opacity: 1; }
+  0%   { transform: translate(-50%, -50%) rotate(0deg) translateY(-40vh) scale(1); }
+  100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-40vh) scale(1); }
 }
 @keyframes moonOrbit {
-  0%   { transform: translate(-50%, -50%) rotate(180deg) translateY(-32vh) scale(0.95); opacity: 0.1; }
-  40%  { opacity: 0.2; }
-  49%  { opacity: 1; }
-  50%  { transform: translate(-50%, -50%) rotate(360deg) translateY(-32vh) scale(1); opacity: 1; }
-  51%  { opacity: 1; }
-  60%  { opacity: 0.2; }
-  100% { transform: translate(-50%, -50%) rotate(540deg) translateY(-32vh) scale(0.95); opacity: 0.1; }
+  0%   { transform: translate(-50%, -50%) rotate(90deg) translateY(-50vh) scale(1); }
+  100% { transform: translate(-50%, -50%) rotate(450deg) translateY(-50vh) scale(1); }
 }
     
     @keyframes skyDayNight {
@@ -162,8 +191,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
+  align-items: center;
+  justify-content: center;
 }
 
 

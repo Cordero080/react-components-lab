@@ -1,3 +1,53 @@
+/* Vertical slide-up animation for day of week */
+.day-flip-outer {
+  width: 7ch;
+  height: 2.5em;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+}
+.day-flip-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  font-family: 'Orbitron', 'Jura', 'Segoe UI', Arial, sans-serif !important;
+  animation: dayFlipFade 3.2s cubic-bezier(.7,0,.3,1) infinite;
+}
+@keyframes dayFlipFade {
+  0% { opacity: 1; transform: translateY(0); }
+  40% { opacity: 0; transform: translateY(-60%); }
+ 60% { opacity: 0; transform: translateY(60%); }
+ 100% { opacity: 1; transform: translateY(0); }
+}
+/* News ticker style infinite horizontal scroll for day of week */
+.day-ticker-outer {
+  width: 7ch; /* Only show one word at a time (adjust as needed) */
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 2.5em;
+  position: relative;
+}
+.day-ticker-inner {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: dayTickerScroll 7s linear infinite;
+  position: relative;
+}
+@keyframes dayTickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes dayTickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(390%); }
+}
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;500;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Inter:wght@400;600&display=swap');
 
@@ -93,23 +143,39 @@ section .weather::after {
 
 .weather--clear {
   background-image:
-    linear-gradient(180deg, #010314 0%, #00010a 100%),
-    radial-gradient(320px 220px at 60% -10%, rgba(8, 14, 28, 0.62), transparent 70%);
-  border: 3.5px solid rgba(6, 28, 101, 0.689);
-  filter: brightness(.77) contrast(1.5);
+    linear-gradient(120deg, #021927 0%, #e2ecf0 100%) !important;
+  border: 3.5px solid rgba(235, 235, 237, 0.689) !important;
+  filter: brightness(.92) contrast(1.6) saturate(1.2) !important;
+  background-size: 200% 200% !important;
+  background-position: 0% 50% !important;
+  background-repeat: no-repeat !important;
+  animation: none !important;
 }
-.weather--clear-night { /* Specific class for clear night, derived from clear */
-  background-image:
-    linear-gradient(180deg, #010314 0%, #00010a 100%),
-    radial-gradient(320px 220px at 60% -10%, rgba(8, 14, 28, 0.62), transparent 70%);
-  border: 3.5px solid rgba(6, 28, 101, 0.689);
-  filter: brightness(.77) contrast(1.5);
+@keyframes freezingBlizzardGradient {
+  0% {
+    background-position: 0% 50%, 50% 0%, 0% 0%;
+    filter: brightness(.1) contrast(0) saturate(-1.2) blur(0.5px);
+  }
+  40% {
+    background-position: 100% 60%, 50% 0%, 100% 100%;
+    filter: brightness(1) contrast(1) saturate(2.3) blur(1.2px);
+  }
+  60% {
+    background-position: 80% 40%, 50% 0%, 80% 0%;
+    filter: brightness(1) contrast(1.5) saturate(1.2) blur(0.7px);
+  }
+  100% {
+    background-position: 0% 50%, 50% 0%, 0% 0%;
+    filter: brightness(1.1) contrast(1.6) saturate(1.2) blur(0.5px);
+  }
 }
+
+
 
 
 @keyframes stormFlash {
   0%, 70% { filter: brightness(1); }
-  10%, 20% { filter: brightness(1.8); }
+  10%, 20% { filter: brightness(2.8); }
   15%, 55% { filter: brightness(1.2); }
   10%, 30% { filter: brightness(1); }
 }
@@ -280,5 +346,39 @@ section .weather::before {
     min-height: 450px !important; 
     max-height: 450px !important; 
   }
+  
+}
+
+/* Remove conflicting overlays for Tuesday card */
+section .weather.weather--clear::before {
+  display: none !important;
+}
+section .weather::before {
+  display: none !important;
+}
+
+/* Tuesday's card specific overlay (blizzard effect) */
+section .weather:nth-child(3)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 22px;
+  background:
+    linear-gradient(120deg, rgba(180,220,255,0.22) 0%, rgba(255,255,255,0.13) 100%),
+    linear-gradient(60deg, rgba(200,240,255,0.18) 0%, rgba(0,255,255,0.09) 100%);
+  mix-blend-mode: lighten;
+  opacity: 0.92;
+  animation: freezingBlizzardGradient 7s linear infinite;
+}
+
+section .weather:nth-child(4) {
+  background: linear-gradient(120deg, #adc2cb6f 0%, #6e747779 100%) !important;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  animation: freezingBlizzardGradient 7s linear infinite !important;
+  border: 3.5px solid #b3e1ff50;
+  filter: brightness(1.08) contrast(1.25) saturate(1.18) blur(0.2px);
   
 }

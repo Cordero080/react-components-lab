@@ -1,16 +1,63 @@
-# React + Vite
+## Visual Demo: Day and Night
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Below are screenshots demonstrating the animated day and night states:
 
-Currently, two official plugins are available:
+**Day:**
+![Night Forecast](./forecast-2.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Night:**
+![Day Forecast](./forecast-1.png)
 
-## React Compiler
+## Animated Day/Night Sky
 
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The app’s background features a CSS-animated gradient that smoothly transitions from day to night:
 
-## Expanding the ESLint configuration
+- The background uses a linear gradient and the `skyDayNight` keyframes to animate between lighter (day) and darker (night) tones.
+- The sun and moon are absolutely positioned elements that orbit the center of the screen using their own CSS keyframe animations (`sunOrbit` and `moonOrbit`).
+- As the gradient brightens, the sun appears and orbits; as it darkens, the sun fades out and the moon fades in, orbiting in a different path.
+- This creates a dynamic, immersive sky that transitions smoothly from day to night and back again, with both celestial bodies moving in realistic orbits.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# React Weather App (Vite)
+
+**Description:**
+This app is a modern, interactive weather dashboard that displays local weather conditions with animated backgrounds, sun/moon orbits, and dynamic card effects. Each day’s forecast is presented as a visually distinct card, featuring custom effects like flames, snow, and more. The UI is intentionally minimal, with room for future polish and design improvements.
+
+For fun and experimentation, some weather conditions are dramatized with a touch of sarcasm! The project is modular, responsive, and designed for both clarity and visual impact. Built with React and Vite, the codebase is organized for easy extension and customization.
+
+## Project Structure
+
+<pre>
+src/
+└── components/
+		└── WeatherForecast/
+				├── WeatherForecast.jsx
+				├── WeatherForecast.css
+				├── WeatherData/
+				│   ├── WeatherData.jsx
+				│   └── WeatherData.css
+				├── effects/
+				│   ├── Flame.jsx
+				│   └── SnowParticles.jsx
+				├── icons/
+				│   └── WeatherIcon.jsx
+				└── cursor/
+						├── DualRingCursor.jsx
+						├── CursorFX.jsx
+						└── cursor.css
+</pre>
+
+## Organization Philosophy
+
+- **Parent/child/grandchild**: Components are grouped by feature and relationship, not just by type.
+- **Effects**: All weather-related visual effects are in the `effects` folder.
+- **Icons**: All icon components are in the `icons` folder.
+- **Cursor**: All custom cursor logic and styles are in the `cursor` folder.
+
+## How to Run
+
+1. Install dependencies: `npm install`
+2. Start the dev server: `npm run dev`
+
+## Customization
+
+You can add new effects, icons, or data displays by creating new components in the appropriate subfolder and importing them where needed.
